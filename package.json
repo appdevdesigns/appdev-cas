@@ -1,0 +1,32 @@
+{
+  "name": "appdev-cas",
+  "version": "0.0.0",
+  "description": "(plugin) A Central Authentication System (CAS) module for our appdev framework.",
+  "main": "module.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test",
+    "postinstall": "node setup/setup.js",
+    "postupdate": "node setup/setup.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/appdevdesigns/appdev-cas.git"
+  },
+  "author": "Johnny Hausman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/appdevdesigns/appdev-cas/issues"
+  },
+  "homepage": "https://github.com/appdevdesigns/appdev-cas",
+  "dependencies": {
+    "ad-utils": "git://github.com/appdevdesigns/ad-utils",
+    "cas": "git://github.com/joshchan/node-cas"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.21.4"
+  }
+}
