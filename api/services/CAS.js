@@ -21,6 +21,7 @@ var cas;
  */
 module.exports.__init = function() {
 
+    AD.log('... <green><bold>CAS.__init()</bold></green>');
     cas = new CASObject({
         base_url: sails.config.cas.baseURL,
         version: 2.0,
