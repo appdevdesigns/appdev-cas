@@ -23,7 +23,7 @@
   "homepage": "https://github.com/appdevdesigns/appdev-cas",
   "dependencies": {
     "ad-utils": "git://github.com/appdevdesigns/ad-utils",
-    "cas": "git://github.com/joshchan/node-cas"
+    "cas": "git://github.com/joshchan/node-cas#test"
   },
   "devDependencies": {
     "chai": "^1.9.1",
