@@ -188,7 +188,11 @@ module.exports.isAuthenticated = function(req, res, ok)
                     }
                 }
 
-                ADCore.auth.markAuthenticated(req, guid); //req.session.authenticated = true;
+                ADCore.auth.markAuthenticated(req, {
+                    guid: guid,
+                    username: username,
+                    languageCode: extended.language
+                });
                 req.session.cas = extended;
                 return ok();
             });
