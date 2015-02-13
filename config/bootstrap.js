@@ -11,7 +11,7 @@
 module.exports = function (cb) {
 
 
-	CAS.__init();
+	CAS.__init();  // <--- not Async 
 
     cb();       // successful response
     // cb(err);   // in case of an unrecoverable error
