@@ -4,8 +4,8 @@
 
 var AD = require('ad-utils');
 var CASObject = require('cas');
+var url = require('url');
 var cas;
-
 
 
 
@@ -21,10 +21,11 @@ var cas;
  */
 module.exports.__init = function() {
 
+    AD.log('... <green><bold>CAS.__init()</bold></green>');
     cas = new CASObject({
         base_url: sails.config.cas.baseURL,
         version: 2.0,
-        external_pgt_url: sails.config.cas.proxyURL // can be undefined
+        external_pgt_url: sails.config.cas.proxyURL || sails.config.cas.pgtURL// can be undefined
     });
 
 }
@@ -72,10 +73,28 @@ module.exports.__MockMe = function(opts) {
 
 
 
-
 module.exports.authenticate = function(req, res, callback)
 {
 
+    var serviceURL;     // if serviceURL remains undefined, cas.authenticate() will 
+                        // decode what it needs from the req.headers[]
+
+    // if we are behind a Proxy, we need to make sure CAS uses 
+    // the original URL that was received by our proxy
+    if (req.headers['x-proxied-host']) {
+
+        var queryObj = url.parse(req.url,true).query;
+//        var searchString = url.parse(req.url).search;
+
+        // need to remove ticket from service url because it isn't part of service url
+        delete queryObj['ticket'];
+        serviceURL = url.format({
+            protocol: req.headers['x-proxied-protocol'],
+            host: req.headers['x-proxied-host'],
+            pathname: req.headers['x-proxied-request-uri'],
+            query: queryObj
+        });
+    }
 
     cas.authenticate(req, res, function(err, status, username, extended) {
 
@@ -97,6 +116,9 @@ module.exports.authenticate = function(req, res, callback)
             else {
                 var date = new Date();
                 var token = Math.round(date.getTime() / 60000);
+// console.log('... authenticated() -> err', err);
+// console.log('... req.url:'+req.url);
+
                 if (req.query['_cas_retry'] != token) {
                     // There was a CAS error. A common cause is when the
                     // `ticket` portion of the querystring remains after the
@@ -105,6 +127,9 @@ module.exports.authenticate = function(req, res, callback)
                     var url = req.url
                         .replace(/_cas_retry=\d+&?/, '')
                         .replace(/([?&])ticket=[\w-]+/, '$1_cas_retry='+token);
+
+// console.log('... url:'+url);
+
                     res.redirect(url, 307);
                 } else {
                     // Already retried. There is no way to recover from this.
@@ -116,7 +141,7 @@ module.exports.authenticate = function(req, res, callback)
         else {
             return callback(username, extended);
         }
-    });
+    }, serviceURL);
 };
 
 
@@ -187,7 +212,11 @@ module.exports.isAuthenticated = function(req, res, ok)
                     }
                 }
 
-                ADCore.auth.markAuthenticated(req, guid); //req.session.authenticated = true;
+                ADCore.auth.markAuthenticated(req, {
+                    guid: guid,
+                    username: username,
+                    languageCode: extended.language
+                });
                 req.session.cas = extended;
                 return ok();
             });
@@ -203,6 +232,7 @@ module.exports.logout = function(req, res, returnURL) {
     req.session.casExtended = undefined;
     cas.logout(req, res, returnURL, true);
 };
+
 
 
 module.exports.baseURI = function() {
