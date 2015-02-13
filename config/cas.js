@@ -10,10 +10,10 @@ module.exports.cas = {
     baseURL: 'https://signin.example.com:443/cas',
 
     /*
-     *  proxyURL: the url to your proxy server.
+     *  pgtURL: the url to your PGT server.
      *
      *  if you don't support Proxy Connections then just leave this 'undefined'
      */
-    proxyURL: undefined
+    pgtURL : undefined
 
 };
