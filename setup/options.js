@@ -12,6 +12,22 @@
  *
  */
 module.exports = {
+
+     // copy over our config/cas.js 
+     copyFiles: {
+        'config/cas.js' : 'config/cas.js'
+     },
+
+
+    ignore:{
+
+            // don't make a symlink to config/cas.js  
+            dirLinks: {
+                'config/cas.js':1
+            }
+
+        }
+
 /*
 
      // list any directories that need to be created in the base sails path
