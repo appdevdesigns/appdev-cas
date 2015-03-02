@@ -133,7 +133,7 @@ module.exports.authenticate = function(req, res, callback)
 
 // console.log('... url:'+url);
 
-                    res.redirect(url, 307);
+                    res.redirect(307, url);  // <-- sails v0.11 changed the params
                 } else {
                     // Already retried. There is no way to recover from this.
                     res.send("<dt>CAS login failed</dt><dd>" + err.message + "</dd>", 401);
