@@ -207,11 +207,13 @@ module.exports.isAuthenticated = function(req, res, ok)
                 // If we are using a CAS proxy, the PGTIOU will be stored
                 // as extended['PGTIOU']
 
-                
+    AD.log('<green><bold>... CAS extended values: </bold> </green>', extended);
+
                 var guid = extended.username;
+                var guidKey = sails.config.cas.guidKey || 'eaguid';
                 if (extended.attributes) {
-                    if (extended.attributes.eaguid) {
-                        guid = extended.attributes.eaguid;
+                    if (extended.attributes[guidKey]) {
+                        guid = extended.attributes[guidKey];
                     }
                 }
 
