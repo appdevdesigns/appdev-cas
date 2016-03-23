@@ -14,6 +14,13 @@ module.exports.cas = {
      *
      *  if you don't support Proxy Connections then just leave this 'undefined'
      */
-    pgtURL : undefined
+    pgtURL : undefined,
+
+
+    /*
+     * guidKey: the object key that holds the global unique ID for 
+     * this CAS user.
+     */
+    guidKey: 'guidKey'
 
 };

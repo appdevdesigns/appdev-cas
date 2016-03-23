@@ -133,7 +133,7 @@ module.exports.authenticate = function(req, res, callback)
 
 // console.log('... url:'+url);
 
-                    res.redirect(url, 307);
+                    res.redirect(307, url);  // <-- sails v0.11 changed the params
                 } else {
                     // Already retried. There is no way to recover from this.
                     res.send("<dt>CAS login failed</dt><dd>" + err.message + "</dd>", 401);
@@ -207,11 +207,13 @@ module.exports.isAuthenticated = function(req, res, ok)
                 // If we are using a CAS proxy, the PGTIOU will be stored
                 // as extended['PGTIOU']
 
-                
+// AD.log('<green><bold>... CAS extended values: </bold> </green>', extended);
+
                 var guid = extended.username;
+                var guidKey = sails.config.cas.guidKey || 'eaguid';
                 if (extended.attributes) {
-                    if (extended.attributes.eaguid) {
-                        guid = extended.attributes.eaguid;
+                    if (extended.attributes[guidKey]) {
+                        guid = extended.attributes[guidKey];
                     }
                 }
 
