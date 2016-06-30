@@ -1,9 +1,9 @@
 language: node_js
 node_js:
-- "0.10"
+- "0.12"
 
 before_script:
-- npm install -g  balderdashy/sails appdevdesigns/appdev-cli#develop
+- npm install -g  balderdashy/sails appdevdesigns/appdev-cli
 - cd /tmp
 - /home/travis/build/appdevdesigns/appdev-cas/test/setup/install.sh
 - cd ad-test/node_modules
