@@ -21,9 +21,9 @@ var cas;
  */
 module.exports.__init = function() {
 
-    AD.log('... <green><bold>CAS.__init()</bold></green>');
+    sails.log.info('CAS.__init()');
     if (sails.config.cas.proxyURL) {
-        AD.log('<yellow>warn:</yellow> config/cas.js & config/local.js : <yellow>cas.proxyURL</yellow> is depreciated.  use <green>cas.pgtURL</green> instead.')
+        sails.log.warn('CAS.__init(): config/cas.js & config/local.js :cas.proxyURL is depreciated.  use [cas.pgtURL] instead.');
     }
     cas = new CASObject({
         base_url: sails.config.cas.baseURL,
